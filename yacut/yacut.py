@@ -1,10 +1,15 @@
-from flask import Flask, render_template
+import random
+# from urllib.parse import urljoin
+from flask import Flask, redirect, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from random import randrange
 from flask_wtf import FlaskForm
 from wtforms import URLField
 from wtforms.validators import DataRequired, Length, Optional
+
+
+CHARACTERS = '123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
+PERMANENT_PART = 'http://127.0.0.1:5000/'
 
 
 app = Flask(__name__,
@@ -37,17 +42,24 @@ class URLMapForm(FlaskForm):
     )
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index_view():
     form = URLMapForm()
-    # quantity = URLMap.query.count()
-    # if not quantity:
-    #     return 'В базе данных мнений о фильмах нет.'
-    # offset_value = randrange(quantity)
-    # original_url = URLMap.query.offset(offset_value).first()
-    # # Вот здесь в шаблон передаётся весь объект opinion
+    characters = list(CHARACTERS)
+    if form.validate_on_submit():
+        url = URLMap(
+            original=form.original_link.data,
+            short=form.custom_id.data,
+        )
+        if url.short is not None:
+            return render_template('index.html', form=form, short=url.short)
+        random.shuffle(characters)
+        short_gen = ''.join([random.choice(CHARACTERS) for x in range(6)])
+        url = PERMANENT_PART + short_gen
+        db.session.add(url)
+        db.session.commit()
+        return render_template('index.html', form=form, short=url)
     return render_template('index.html', form=form)
-    # , original_url=original_url)
 
 
 if __name__ == '__main__':
