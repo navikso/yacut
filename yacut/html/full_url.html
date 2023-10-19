@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="/img/fav/fav.ico" type="image">
+  <link rel="icon" href="img/fav/fav.ico" type="image">
   <link rel="apple-touch-icon" sizes="180x180" href="/img/fav/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/img/fav/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/img/fav/favicon-16x16.png">
@@ -16,22 +16,40 @@
   {% include "header.html" %}
   {% block content %}{% endblock content %}
 
+
   <main>
     <section class="container my-5 px-4">
       <h1 class="text-center"><span style="color:red">Ya</span>Cut</h1>
+      <div class="container">
+        <div class="row my-3">
+          <div class="col-sm">
+          </div>
+          <div class="col-sm">
+          </div>
+          <div class="col-sm">
+          </div>
+        </div>
+      </div>
+
       <div class="container">
         <div class="row ">
           <div class="col-sm">
           </div>
           <div class="col-sm">
             <p class="text-center">
-            <h5 class="text-center">Ooooopss... Такой страницы нет</h5>
+            <h5 class="text-center">Короткой ссылке с указанным id соответствует полная ссылка:</h5>
+              <div class="col-sm">
+                <p class="text-center">
+                  <h9 class="text-center"> {{ url }}</h9>
+                </p>
+              </div>
             </p>
           </div>
           <div class="col-sm">
           </div>
         </div>
       </div>
+
     </section>
   </main>
   {% include "footer.html" %}
