@@ -1,10 +1,9 @@
 import random
-import re
 from datetime import datetime
 
 import requests
 
-from settings import CHARACTERS, PERMANENT_PART, SPECIAL_CHARS
+from settings import CHARACTERS
 from yacut import db
 from yacut.errors import InvalidAPIUsage
 

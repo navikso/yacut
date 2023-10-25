@@ -1,4 +1,4 @@
-from flask import flash, jsonify, redirect, render_template, request, url_for
+from flask import jsonify, render_template, request
 
 from settings import PERMANENT_PART
 from yacut import app, db
