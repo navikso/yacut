@@ -25,6 +25,7 @@ git clone https://github.com/navikso/yacut.git
 2. Создайте и активируйте виртуальное окружение:
 ```
 python -m venv venv
+
 source venv/bin/activate
 ```
 
