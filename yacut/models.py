@@ -42,7 +42,7 @@ def check_original_url(url):
     try:
         requests.get(url, timeout=5)
         valids = 1
-    except:
+    except: # noqa: E722
         pass
     if valids == 1:
         return url
