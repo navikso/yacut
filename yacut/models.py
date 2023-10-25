@@ -1,10 +1,13 @@
-import requests
 import random
+import re
 from datetime import datetime
+
+import requests
+
+from settings import CHARACTERS, PERMANENT_PART, SPECIAL_CHARS
 from yacut import db
 from yacut.errors import InvalidAPIUsage
-from settings import CHARACTERS, PERMANENT_PART, SPECIAL_CHARS
-import re
+
 
 class URLMap(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -21,17 +24,17 @@ class URLMap(db.Model):
         )
 
     def from_dict(self, data):
-        self.original = data['url']
-        self.short = data['custom_id']
+        self.original = data["url"]
+        self.short = data["custom_id"]
 
     def __repr__(self):
-        return '<URLMap {}>'.format(self.original)
+        return "<URLMap {}>".format(self.original)
 
 
 def get_unique_short_id():
     characters = list(CHARACTERS)
     random.shuffle(characters)
-    short_gen = ''.join([random.choice(CHARACTERS) for x in range(6)])
+    short_gen = "".join([random.choice(CHARACTERS) for x in range(6)])
     return short_gen
 
 
@@ -44,16 +47,18 @@ def check_original_url(url):
         pass
     if valids == 1:
         return url
-    raise InvalidAPIUsage('Некорректный URL.', status_code=400)
+    raise InvalidAPIUsage("Некорректный URL.", status_code=400)
 
 
 def check_short_url(short_url):
-    if short_url == '' or short_url is None:
-        raise InvalidAPIUsage(
-            'Нет короткой ссылки', status_code=400)
+    if short_url == "" or short_url is None:
+        raise InvalidAPIUsage("Нет короткой ссылки", status_code=400)
     if len(short_url) >= 16:
-        raise InvalidAPIUsage('Указано недопустимое имя для короткой ссылки', status_code=400)
+        raise InvalidAPIUsage(
+            "Указано недопустимое имя для короткой ссылки", status_code=400
+        )
     if all(char in CHARACTERS for char in str(short_url)):
         return short_url
     raise InvalidAPIUsage(
-         'Указано недопустимое имя для короткой ссылки', status_code=400)
+        "Указано недопустимое имя для короткой ссылки", status_code=400
+    )

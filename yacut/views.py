@@ -1,11 +1,12 @@
-from flask import flash, render_template, request, redirect
+from flask import flash, redirect, render_template, request
+
+from settings import PERMANENT_PART, SPECIAL_CHARS
 from yacut import app, db
 from yacut.forms import URLMapForm
 from yacut.models import URLMap, get_unique_short_id
-from settings import SPECIAL_CHARS, PERMANENT_PART
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route("/", methods=["GET", "POST"])
 def index_view():
     form = URLMapForm()
     if form.validate_on_submit():
@@ -14,29 +15,33 @@ def index_view():
             urlmap.short = get_unique_short_id()
 
         if any(char in SPECIAL_CHARS for char in urlmap.short):
-            flash('Указано недопустимое имя для короткой ссылки')
-            return render_template('index.html', form=form), 400
+            flash("Указано недопустимое имя для короткой ссылки")
+            return render_template("index.html", form=form), 400
 
         if URLMap.query.filter_by(short=urlmap.short).first() is not None:
-            flash('Предложенный вариант короткой ссылки уже существует.')
-            return render_template('index.html', form=form), 400
+            flash("Предложенный вариант короткой ссылки уже существует.")
+            return render_template("index.html", form=form), 400
 
         db.session.add(urlmap)
         db.session.commit()
 
-        return render_template(
-            'index.html',
-            form=form,
-            short=PERMANENT_PART + urlmap.short,
-            original=urlmap.original), 200
+        return (
+            render_template(
+                "index.html",
+                form=form,
+                short=PERMANENT_PART + urlmap.short,
+                original=urlmap.original,
+            ),
+            200,
+        )
 
-    return render_template('index.html', form=form), 200
+    return render_template("index.html", form=form), 200
 
 
-@app.route('/<string:short_id>', methods=['GET'])
+@app.route("/<string:short_id>", methods=["GET"])
 def get_original_url(short_id):
     url = URLMap.query.filter_by(short=short_id).first()
     if not url:
-        return render_template('404.html'), 404
+        return render_template("404.html"), 404
 
     return redirect(url.original)
