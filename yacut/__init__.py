@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from settings import Config
 
+
 app = Flask(
     __name__,
     static_url_path="",
