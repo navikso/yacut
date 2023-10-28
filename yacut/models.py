@@ -1,17 +1,13 @@
-import random
 from datetime import datetime
 
-import requests
-
-from settings import CHARACTERS
+from settings import ORIGINAL_LINK_LEN, SHORT_LINK_LEN
 from yacut import db
-from yacut.errors import InvalidAPIUsage
 
 
 class URLMap(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    original = db.Column(db.String(256), nullable=False)
-    short = db.Column(db.String(16), unique=True)
+    original = db.Column(db.String(ORIGINAL_LINK_LEN), nullable=False)
+    short = db.Column(db.String(SHORT_LINK_LEN), unique=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
     def to_dict(self):
@@ -28,36 +24,3 @@ class URLMap(db.Model):
 
     def __repr__(self):
         return "<URLMap {}>".format(self.original)
-
-
-def get_unique_short_id():
-    characters = list(CHARACTERS)
-    random.shuffle(characters)
-    short_gen = "".join([random.choice(CHARACTERS) for x in range(6)])
-    return short_gen
-
-
-def check_original_url(url):
-    valids = 0
-    try:
-        requests.get(url, timeout=5)
-        valids = 1
-    except:  # noqa: E722
-        pass
-    if valids == 1:
-        return url
-    raise InvalidAPIUsage("Некорректный URL.", status_code=400)
-
-
-def check_short_url(short_url):
-    if short_url == "" or short_url is None:
-        raise InvalidAPIUsage("Нет короткой ссылки", status_code=400)
-    if len(short_url) >= 16:
-        raise InvalidAPIUsage(
-            "Указано недопустимое имя для короткой ссылки", status_code=400
-        )
-    if all(char in CHARACTERS for char in str(short_url)):
-        return short_url
-    raise InvalidAPIUsage(
-        "Указано недопустимое имя для короткой ссылки", status_code=400
-    )
