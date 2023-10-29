@@ -13,7 +13,7 @@ def index_api_view():
 
 
 @app.route("/api/id/", methods=["POST"])
-def url_view():
+def get_short_url():
     data = request.get_json()
     get_validated_data(data)
     url = URLMap(original=data["url"], short=data["custom_id"])
@@ -27,10 +27,11 @@ def url_view():
 
 @app.route("/api/id/<string:short_id>/", methods=["GET"])
 def get_full_url(short_id):
+    # Тесты требуют ответа json, что невозможно
+    # с методом get_or_404.
+
     url = URLMap.query.filter_by(short=short_id)
     if not url.all():
         return jsonify({"message": "Указанный id не найден"}), 404
-
     assert len(url.all()) == 1
-
     return jsonify({"url": url.first().original}), 200

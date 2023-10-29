@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import SubmitField, URLField
 from wtforms.validators import DataRequired, Length, Optional
 
-from settings import ORIGINAL_LINK_LEN, SHORT_LINK_LEN
+from settings import MIN_LEN, ORIGINAL_LINK_LEN, SHORT_LINK_LEN
 
 
 class URLMapForm(FlaskForm):
@@ -10,11 +10,11 @@ class URLMapForm(FlaskForm):
         "Введите ссылку",
         validators=[
             DataRequired(message="Обязательное поле"),
-            Length(1, ORIGINAL_LINK_LEN),
+            Length(MIN_LEN, ORIGINAL_LINK_LEN),
         ],
     )
     custom_id = URLField(
         "Введите свой вариант короткой ссылки",
-        validators=[Length(1, SHORT_LINK_LEN), Optional()],
+        validators=[Length(MIN_LEN, SHORT_LINK_LEN), Optional()],
     )
     submit = SubmitField("Создать")

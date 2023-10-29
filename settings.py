@@ -8,6 +8,7 @@ class Config(object):
 
 
 CHARACTERS = "123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
+MIN_LEN = 1
 ORIGINAL_LINK_LEN = 128
 PERMANENT_PART = "http://localhost/"
 SHORT_LINK_LEN = 16

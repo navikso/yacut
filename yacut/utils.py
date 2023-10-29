@@ -1,14 +1,10 @@
 import random
 
 import requests
+from flask import flash, render_template
 
-from settings import (
-    CHARACTERS,
-    PERMANENT_PART,
-    SHORT_AUTO_PART_LEN,
-    SHORT_LINK_LEN,
-    TIMEOUT_FOR_ORIGINAL,
-)
+from settings import (CHARACTERS, PERMANENT_PART, SHORT_AUTO_PART_LEN,
+                      SHORT_LINK_LEN, SPECIAL_CHARS, TIMEOUT_FOR_ORIGINAL)
 from yacut.errors import InvalidAPIUsage
 from yacut.models import URLMap
 
@@ -64,3 +60,15 @@ def get_validated_data(data):
         data["custom_id"] = get_unique_short_id()
 
     check_short_url(data["custom_id"])
+
+
+def get_validated_form(form, urlmap):
+    if not urlmap.short:
+        urlmap.short = get_unique_short_id()
+    if any(char in SPECIAL_CHARS for char in urlmap.short):
+        flash("Указано недопустимое имя для короткой ссылки")
+        return render_template("index.html", form=form), 400
+
+    if URLMap.query.filter_by(short=urlmap.short).first() is not None:
+        flash("Предложенный вариант короткой ссылки уже существует.")
+        return render_template("index.html", form=form), 400

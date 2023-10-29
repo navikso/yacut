@@ -7,7 +7,7 @@ from yacut import db
 class URLMap(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     original = db.Column(db.String(ORIGINAL_LINK_LEN), nullable=False)
-    short = db.Column(db.String(SHORT_LINK_LEN), unique=True)
+    short = db.Column(db.String(SHORT_LINK_LEN))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
     def to_dict(self):
