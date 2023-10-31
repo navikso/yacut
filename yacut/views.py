@@ -4,7 +4,7 @@ from settings import PERMANENT_PART
 from yacut import app, db
 from yacut.forms import URLMapForm
 from yacut.models import URLMap
-from yacut.utils import get_unique_short_id, get_validated_form
+from yacut.utils import get_unique_short_id, get_validated_form, get_url_by_id_or_404
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -33,5 +33,5 @@ def index_view():
 
 @app.route("/<string:short_id>", methods=["GET"])
 def get_original_url(short_id):
-    url = URLMap.query.filter_by(short=short_id).first_or_404()
-    return redirect(url.original)
+    url = get_url_by_id_or_404(short_id)
+    return redirect(url)

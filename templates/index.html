@@ -22,11 +22,9 @@
               </p>
               {{ form.custom_id(class="form-control form-control-lg py-3 mb-3", placeholder=form.custom_id.label.text, rows="3", cols="40")}}
               <p class="text-danger">
-                {% if form.custom_id.errors %}
-                  {% for error in form.custom_id.errors %}
-                    {{ error }}
-                  {% endfor %}
-                {% endif %}
+                {% for error in form.custom_id.errors %}
+                  {{ error }}
+                {% endfor %}
               </p>
               <p class="py-3 mb-3">
                 {% with messages = get_flashed_messages() %}

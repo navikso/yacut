@@ -1,7 +1,7 @@
 import random
 
 import requests
-from flask import flash, render_template
+from flask import jsonify, flash, render_template
 
 from settings import (CHARACTERS, PERMANENT_PART, SHORT_AUTO_PART_LEN,
                       SHORT_LINK_LEN, SPECIAL_CHARS, TIMEOUT_FOR_ORIGINAL)
@@ -72,3 +72,11 @@ def get_validated_form(form, urlmap):
     if URLMap.query.filter_by(short=urlmap.short).first() is not None:
         flash("Предложенный вариант короткой ссылки уже существует.")
         return render_template("index.html", form=form), 400
+
+
+def get_url_by_id_or_404(short_id):
+    url = URLMap.query.filter_by(short=short_id).first_or_404()
+    # if not url:
+    #
+    #     return jsonify({"message": "Указанный id не найден"})
+    return url.original
