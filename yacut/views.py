@@ -23,7 +23,8 @@ def index_view():
                 200,
             )
         except Exception as err:
-            flash(str(err)), 400
+            flash(str(err))
+            return render_template("index.html", form=form), 400
     return render_template("index.html", form=form), 200
 
 
