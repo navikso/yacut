@@ -14,7 +14,7 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from yacut import api_views, errors, forms, models, services, views
+from yacut import api_views, errors, forms, models, services, validators, views
 
 if __name__ == "__main__":
     app.run()
