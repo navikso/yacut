@@ -11,7 +11,8 @@ def index_view():
     if form.validate_on_submit():
         try:
             get_short_link(
-                {"url": form.original_link.data, "custom_id": form.custom_id.data}
+                {"url": form.original_link.data,
+                 "custom_id": form.custom_id.data}
             )
             return (
                 render_template(
@@ -24,7 +25,6 @@ def index_view():
             )
         except Exception as err:
             flash(str(err))
-            return render_template("index.html", form=form), 400
     return render_template("index.html", form=form), 200
 
 

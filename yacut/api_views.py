@@ -17,5 +17,5 @@ def get_short_url():
 def get_full_url(short_id):
     try:
         return jsonify({"url": get_url_by_id_or_404(short_id)}), 200
-    except:
+    except Exception:
         return jsonify({"message": "Указанный id не найден"}), 404
