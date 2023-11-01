@@ -53,8 +53,10 @@
               <div class="col-sm">
                 <p class="text-center">
                   <h5 class="text-center">
-                    {% if not None %}
-                      <a href="{{ short }}">{{ original }}</a>
+                    {% if short %}
+                      <a href="{{ url_for('get_original_url', short_id=short, _external=True) }}">
+                        {{ url_for('get_original_url', short_id=short, _external=True) }}
+                      </a>
                     {% endif %}
                   </h5>
                 </p>

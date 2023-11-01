@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from flask import url_for
+
 from settings import ORIGINAL_LINK_LEN, SHORT_LINK_LEN
 from yacut import db
 
@@ -12,10 +14,8 @@ class URLMap(db.Model):
 
     def to_dict(self):
         return dict(
-            id=self.id,
-            original=self.original,
-            short=self.short,
-            timestamp=self.timestamp,
+            url=self.original,
+            short_link=url_for("get_original_url", short_id=self.short, _external=True),
         )
 
     def from_dict(self, data):
