@@ -14,8 +14,7 @@ def get_unique_short_id():
         [random.choice(characters) for x in range(SHORT_AUTO_PART_LEN)])
     if URLMap.query.filter_by(short=short_gen).first() is not None:
         short_gen = get_unique_short_id()
-    short_url = short_gen
-    return short_url
+    return short_gen
 
 
 def check_original_url(url):
@@ -23,18 +22,19 @@ def check_original_url(url):
         raise ValueError("Некорректный URL.")
 
 
-def check_short_url(short_url):
-    print("short url", short_url)
-    if len(short_url) >= SHORT_LINK_LEN:
+def check_short_url(data):
+    if "custom_id" not in data or not data["custom_id"]:
+        data["custom_id"] = get_unique_short_id()
+    if len(data["custom_id"]) >= SHORT_LINK_LEN:
         raise ValueError("Указано недопустимое имя для короткой ссылки")
 
-    elif not all(char in CHARACTERS for char in str(short_url)):
+    elif not all(char in CHARACTERS for char in str(data["custom_id"])):
         raise ValueError("Указано недопустимое имя для короткой ссылки")
 
-    elif URLMap.query.filter_by(short=short_url).first() is not None:
+    elif URLMap.query.filter_by(short=data["custom_id"]).first() is not None:
         raise ValueError("Предложенный вариант короткой ссылки уже существует.")
 
-    return short_url
+    return data["custom_id"]
 
 
 def get_validated_data(data):
@@ -46,9 +46,6 @@ def get_validated_data(data):
 
     check_original_url(data["url"])
 
-    if "custom_id" not in data or not data["custom_id"]:
-        data["custom_id"] = get_unique_short_id()
-
-    check_short_url(data["custom_id"])
+    check_short_url(data)
 
     return data
