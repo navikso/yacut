@@ -20,7 +20,7 @@ def index_view():
                 render_template(
                     "index.html",
                     form=form,
-                    short= data['custom_id'],
+                    short=data['custom_id'],
                 ),
                 200,
             )
