@@ -21,20 +21,20 @@ def check_original_url(url):
     if not requests.get(url, timeout=TIMEOUT_FOR_ORIGINAL):
         raise ValueError("Некорректный URL.")
 
-
-def check_short_url(data):
-    if "custom_id" not in data or not data["custom_id"]:
-        data["custom_id"] = get_unique_short_id()
-    if len(data["custom_id"]) >= SHORT_LINK_LEN:
-        raise ValueError("Указано недопустимое имя для короткой ссылки")
-
-    elif not all(char in CHARACTERS for char in str(data["custom_id"])):
-        raise ValueError("Указано недопустимое имя для короткой ссылки")
-
-    elif URLMap.query.filter_by(short=data["custom_id"]).first() is not None:
-        raise ValueError("Предложенный вариант короткой ссылки уже существует.")
-
-    return data["custom_id"]
+#
+# def check_short_url(data):
+#     if "custom_id" not in data or not data["custom_id"]:
+#         data["custom_id"] = get_unique_short_id()
+#     if len(data["custom_id"]) >= SHORT_LINK_LEN:
+#         raise ValueError("Указано недопустимое имя для короткой ссылки")
+#
+#     elif not all(char in CHARACTERS for char in str(data["custom_id"])):
+#         raise ValueError("Указано недопустимое имя для короткой ссылки")
+#
+#     elif URLMap.query.filter_by(short=data["custom_id"]).first() is not None:
+#         raise ValueError("Предложенный вариант короткой ссылки уже существует.")
+#
+#     return data["custom_id"]
 
 
 def get_validated_data(data):
@@ -44,8 +44,18 @@ def get_validated_data(data):
     if "url" not in data:
         raise ValueError('"url" является обязательным полем!')
 
-    check_original_url(data["url"])
+    check_original_url(data['url'])
 
-    check_short_url(data)
+    if "custom_id" not in data or not data["custom_id"]:
+        data["custom_id"] = get_unique_short_id()
+
+    if len(data["custom_id"]) >= SHORT_LINK_LEN:
+        raise ValueError("Указано недопустимое имя для короткой ссылки")
+
+    elif not all(char in CHARACTERS for char in str(data["custom_id"])):
+        raise ValueError("Указано недопустимое имя для короткой ссылки")
+
+    elif URLMap.query.filter_by(short=data["custom_id"]).first() is not None:
+        raise ValueError("Предложенный вариант короткой ссылки уже существует.")
 
     return data

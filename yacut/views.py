@@ -8,18 +8,19 @@ from yacut.services import get_short_link, get_url_by_id_or_404
 @app.route("/", methods=["GET", "POST"])
 def index_view():
     form = URLMapForm()
+
     if form.validate_on_submit():
         try:
-            get_short_link(
-                {"url": form.original_link.data,
-                 "custom_id": form.custom_id.data}
-            )
+            data = {
+                "url": form.original_link.data,
+                "custom_id": form.custom_id.data
+            }
+            get_short_link(data)
             return (
                 render_template(
                     "index.html",
                     form=form,
-                    short=form.custom_id.data,
-                    original=form.original_link.data,
+                    short= data['custom_id'],
                 ),
                 200,
             )
