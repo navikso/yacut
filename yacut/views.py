@@ -11,16 +11,13 @@ def index_view():
 
     if form.validate_on_submit():
         try:
-            data = {
-                "url": form.original_link.data,
-                "custom_id": form.custom_id.data
-            }
+            data = {"url": form.original_link.data, "custom_id": form.custom_id.data}
             get_short_link(data)
             return (
                 render_template(
                     "index.html",
                     form=form,
-                    short=data['custom_id'],
+                    short=data["custom_id"],
                 ),
                 200,
             )
