@@ -1,11 +1,9 @@
-# import random
-
 import requests
 
 from settings import (CHARACTERS, SHORT_LINK_LEN,
                       TIMEOUT_FOR_ORIGINAL)
 from yacut.models import URLMap
-from yacut.get_short import get_unique_short_id
+from yacut.get_short_service import get_unique_short_id
 
 
 def check_original_url(url):

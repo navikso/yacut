@@ -1,5 +1,3 @@
-import random
-
 from yacut import db
 from yacut.models import URLMap
 from yacut.validators import get_validated_data
