@@ -1,6 +1,6 @@
 from yacut import db
 from yacut.models import URLMap
-from yacut.validators import get_validated_data
+from yacut.validators import data_validator
 
 
 def get_url_by_id_or_404(short_id):
@@ -10,7 +10,7 @@ def get_url_by_id_or_404(short_id):
 
 
 def get_short_link(data):
-    get_validated_data(data)
+    data_validator(data)
     urlmap = URLMap()
     urlmap.from_dict(data)
     db.session.add(urlmap)

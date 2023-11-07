@@ -1,7 +1,7 @@
 import requests
 
 from settings import CHARACTERS, SHORT_LINK_LEN, TIMEOUT_FOR_ORIGINAL
-from yacut.get_short_service import get_unique_short_id
+from yacut.utils import get_validated_data
 from yacut.models import URLMap
 
 
@@ -23,19 +23,9 @@ def check_short_url(custom_id):
     return custom_id
 
 
-def get_validated_data(data):
+def data_validator(data):
     if data is None:
         raise ValueError("Отсутствует тело запроса")
-
-    if "url" not in data:
-        raise ValueError('"url" является обязательным полем!')
-
+    get_validated_data(data)
     check_original_url(data["url"])
-
-    if "custom_id" not in data or not data["custom_id"]:
-        data["custom_id"] = get_unique_short_id()
-        return data
-
     check_short_url(data["custom_id"])
-
-    return data
