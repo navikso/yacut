@@ -1,6 +1,8 @@
 from yacut import db
 from yacut.models import URLMap
-from yacut.validators import data_validator
+from yacut.utils import get_unique_short_id
+from yacut.validators import (check_on_empty, check_original_url,
+                              check_short_url)
 
 
 def get_url_by_id_or_404(short_id):
@@ -10,7 +12,14 @@ def get_url_by_id_or_404(short_id):
 
 
 def get_short_link(data):
-    data_validator(data)
+    check_on_empty(data)
+    check_original_url(data)
+
+    if "custom_id" not in data or not data["custom_id"]:
+        data["custom_id"] = get_unique_short_id()
+    else:
+        check_short_url(data)
+
     urlmap = URLMap()
     urlmap.from_dict(data)
     db.session.add(urlmap)
