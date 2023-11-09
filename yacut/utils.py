@@ -16,9 +16,9 @@ def get_unique_short_id():
     return short_gen
 
 
-def get_validated_data(data):
-    if "url" not in data:
-        raise ValueError('"url" является обязательным полем!')
-    if "custom_id" not in data or not data["custom_id"]:
-        data["custom_id"] = get_unique_short_id()
-        return data
+# def get_validated_data(data):
+#     if "url" not in data:
+#         raise ValueError('"url" является обязательным полем!')
+#     if "custom_id" not in data or not data["custom_id"]:
+#         data["custom_id"] = get_unique_short_id()
+#         return data
